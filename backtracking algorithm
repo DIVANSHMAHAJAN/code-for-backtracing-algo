@@ -1,0 +1,115 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define INT_MAX 999999
+int a[20][20],visited[20][20];
+string s[100];
+vector<int>v;
+int n;
+int travllingSalesmanProblem(int graph[][20], int s)
+{
+
+	vector<int> vertex,v2;
+	for (int i = 0; i < n; i++)
+		if (i != s)
+			vertex.push_back(i);
+
+
+	int min_path = INT_MAX;
+	do {
+
+
+		int current_pathweight = 0;
+
+
+		int k = s;
+		for (int i = 0; i < vertex.size(); i++) {
+            if(graph[k][vertex[i]]==999999)
+            {
+                current_pathweight=999999;
+                break;
+            }
+			current_pathweight += graph[k][vertex[i]];
+			k = vertex[i];
+		}
+        if(current_pathweight!=999999)
+        {
+		current_pathweight += graph[k][s];
+        }
+
+
+        if(current_pathweight<min_path)
+        {
+            min_path=current_pathweight;
+            v2=vertex;
+        }
+
+
+
+	} while (
+		next_permutation(vertex.begin(), vertex.end()));
+
+  for(int i=0;i<v2.size();i++)
+  {
+
+      int x=v2[i];
+
+      v.push_back(x);
+
+  }
+
+	return min_path;
+
+}
+int main(){
+    cout<<"Enter the no of cities"<<"\n";
+    cin>>n;
+    memset(a,-1,sizeof(a));
+    s[0]="school";
+for(int i=1;i<n;i++)
+    {
+    string c;
+    cout<<"Enter the cities for dropping the children"<<"\n";
+    cin>>c;
+    s[i]=c;
+    }
+
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+
+            if(a[j][i]!=-1)
+            {
+                cout<<"DISTANCE ALREADY ENTERED B/W CITIES "<<i+1<<" AND "<<j+1<<"\n";
+                a[i][j]=a[j][i];
+            }
+            else
+            {
+                cout<<"Enter Dist bw cities"<<" "<<i+1<<" and "<<j+1<<"\n";
+                cin>>a[i][j];
+            }
+        }
+    }
+    int k=travllingSalesmanProblem(a,0);
+
+    if(k==999999)
+    {
+    cout<<"NO VALID PATH EXIST FOR THE GIVEN DISTANCES"<<"\n";
+    }
+    else
+    {
+    cout<<"THE SHORTEST DISTANCE IS "<<k<<"\n";
+    cout<<"THE ROUTE IS "<<"\n";
+    cout<<s[0]<<"->";
+        for(int i=0;i<v.size();i++)
+    {
+
+        cout<<s[v[i]]<<"->";
+    }
+    cout<<s[0]<<" ";
+    }
+
+
+
+}
